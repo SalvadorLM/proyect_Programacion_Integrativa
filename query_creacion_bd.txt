@@ -1,0 +1,60 @@
+-- Tabla de Usuarios
+CREATE TABLE Usuarios (
+    ID AUTOINCREMENT PRIMARY KEY,
+    Nombre TEXT,
+    Apellido TEXT,
+    CorreoElectronico TEXT,
+    Contraseña TEXT,
+    FechaRegistro DATETIME
+);
+
+-- Tabla de Publicaciones
+CREATE TABLE Publicaciones (
+    ID AUTOINCREMENT PRIMARY KEY,
+    UsuarioID INT,
+    Contenido MEMO, -- MEMO es similar a TEXT en Access y puede almacenar más datos que un VARCHAR
+    FechaPublicacion DATETIME,
+    FOREIGN KEY (UsuarioID) REFERENCES Usuarios(ID)
+);
+
+-- Tabla de Comentarios
+CREATE TABLE Comentarios (
+    ID AUTOINCREMENT PRIMARY KEY,
+    PublicacionID INT,
+    UsuarioID INT,
+    Contenido MEMO,
+    FechaComentario DATETIME,
+    FOREIGN KEY (PublicacionID) REFERENCES Publicaciones(ID),
+    FOREIGN KEY (UsuarioID) REFERENCES Usuarios(ID)
+);
+
+-- Tabla de Likes
+CREATE TABLE Likes (
+    ID AUTOINCREMENT PRIMARY KEY,
+    PublicacionID INT,
+    UsuarioID INT,
+    FechaLike DATETIME,
+    FOREIGN KEY (PublicacionID) REFERENCES Publicaciones(ID),
+    FOREIGN KEY (UsuarioID) REFERENCES Usuarios(ID)
+);
+
+-- Tabla de Amigos
+CREATE TABLE Amigos (
+    ID AUTOINCREMENT PRIMARY KEY,
+    UsuarioID1 INT,
+    UsuarioID2 INT,
+    Estado VARCHAR(50), -- Por ejemplo: "pendiente", "aceptada", "rechazada", etc.
+    FOREIGN KEY (UsuarioID1) REFERENCES Usuarios(ID),
+    FOREIGN KEY (UsuarioID2) REFERENCES Usuarios(ID)
+);
+
+-- Tabla de Mensajes
+CREATE TABLE Mensajes (
+    ID AUTOINCREMENT PRIMARY KEY,
+    EmisorID INT,
+    ReceptorID INT,
+    Contenido MEMO,
+    FechaEnvio DATETIME,
+    FOREIGN KEY (EmisorID) REFERENCES Usuarios(ID),
+    FOREIGN KEY (ReceptorID) REFERENCES Usuarios(ID)
+);
